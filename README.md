@@ -88,7 +88,7 @@ Before you start, make sure you have the following prerequisites installed on yo
 
 5. Delete a vendor.
     URL: http://localhost:8000/api/vendors/{vondor_id}/
-    Method: POST
+    Method: DELETE
     Description: Deletes the vendor if exists.
 
 6. Create a purchase order.
@@ -111,3 +111,27 @@ Before you start, make sure you have the following prerequisites installed on yo
     URL: http://localhost:8000/api/purchase_orders/?vender=3
     Method: GET
     Description: Returns the list of all Purchase orders in response where vendor = 3.
+
+8. Retrieve details of a specific purchase order.
+    URL: http://localhost:8000/api/purchase_orders/{po_id}/
+    Method: GET
+    Description: Returns the Purchase order in response where purchase order id = {po_id}.
+
+9. Update a purchase order.
+    URL: http://localhost:8000/api/purchase_orders/{po_id}/
+    Method: PUT
+    Ex. data : {    
+        "items":{
+            "Parle g": 290,
+            "Good day": 280
+            },
+        "delivery_date": "25-12-2023" (date format DD/MM/YYYY)
+}
+    Description: Update the Purchase order details and return the updated Purchase order.
+
+10. Delete a purchase order.
+    URL: http://localhost:8000/api/purchase_orders/{po_id}/
+    Method: DELETE
+    Description: Deletes the  Purchase order if exists.
+
+11. 
