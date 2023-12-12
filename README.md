@@ -68,17 +68,17 @@ Before you start, make sure you have the following prerequisites installed on yo
     Description: Creates new vendor and return the vendor info in response.
 
 2. List all vendors.
-    URL: http://localhost:8000/api//api/vendors/
+    URL: http://localhost:8000/api/vendors/
     Method: GET
     Description: Returns the list of all vendors in response.
 
 3. Retrieve a specific vendor's details.
-    URL: http://localhost:8000/api//api/vendors/{condor_id}/
+    URL: http://localhost:8000/api/vendors/{condor_id}/
     Method: GET
     Description: Returns the vendor in response if found otherwise returns blank list.
 
 4. Update a vendor's details.
-    URL: http://localhost:8000/api//api/vendors/{vondor_id}/
+    URL: http://localhost:8000/api/vendors/{vondor_id}/
     Method: PUT
     Ex. data : {    
         "contact_details": "2345556788",
@@ -91,3 +91,23 @@ Before you start, make sure you have the following prerequisites installed on yo
     Method: POST
     Description: Deletes the vendor if exists.
 
+6. Create a purchase order.
+    URL: http://localhost:8000/api/purchase_orders/
+    Method: POST
+    Ex. data : {
+        "vendor": 3,
+        "items":{
+            "Parle g": 270,
+            "Good day": 240
+            }
+    }
+    Description: Creates new Purchase order and return the order in response.
+
+7. List all purchase orders with an option to filter by vendor.
+ URL: http://localhost:8000/api/purchase_orders/
+    Method: GET
+    Description: Returns the list of all Purchase orders in response.
+
+    URL: http://localhost:8000/api/purchase_orders/?vender=3
+    Method: GET
+    Description: Returns the list of all Purchase orders in response where vendor = 3.
