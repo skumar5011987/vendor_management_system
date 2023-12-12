@@ -54,7 +54,7 @@ class PurchaseOrderAPIView(APIView):
     def post(self, request):
         data = request.data
         data = self.add_params(data)
-        data.update({'vendor':request.user.id})
+        data.update({'user':request.user.id})
         serializer = vender_serializer.PurchaseOrderSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
@@ -75,8 +75,9 @@ class PurchaseOrderAPIView(APIView):
             
             # filter by vendor
             if params.get('vender','').strip():
-                vender = params.get('vender','').strip()
-                pos = pos.filter(vender=vender)
+                vendor_id = params.get('vender','').strip()
+                vendor = get_instance(Vendor, vendor_id)
+                pos = pos.filter(vendor_id=vendor)
             
             serializer = vender_serializer.PurchaseOrderSerializer(pos, many=True)
             return Response(serializer.data, status=status.HTTP_200_OK)
