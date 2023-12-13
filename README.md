@@ -80,6 +80,18 @@ Before you start, make sure you have the following prerequisites installed on yo
    URL: http://localhost:8000/api/vendors/
    Method: GET
    Description: Returns the list of all vendors in response.
+   Response: {
+   "status": 200,
+   "message": "ok",
+   "data": [
+   {
+   "id": 3,
+   "name": "Pinogy Corporation",
+   "contact_details": "9999999999",
+   "address": "abc-202 Noida",
+   "vendor_code": "8A15CA7A"
+   }]
+   }
 
 3. Retrieve a specific vendor's details.
    URL: http://localhost:8000/api/vendors/{condor_id}/
@@ -152,11 +164,16 @@ Before you start, make sure you have the following prerequisites installed on yo
     Method: GET
     Description: Returns the vendor's performance metrics.
     Ex. {
+    "status": 200,
+    "message": "ok",
+    "data": {
+    "name": "Pinogy Corporation",
+    "vendor_code": "0D858461",
     "on_time_delivery_rate": 1.0,
     "quality_rating_avg": 95.0,
     "average_response_time": 0.0,
     "fulfillment_rate": 1.5
-    }
+    }}
 
 12. Update Acknowledgment Endpoint:
     URL: http://localhost:8000/api/purchase_orders/{po_id}/acknowledge/
