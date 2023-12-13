@@ -3,6 +3,21 @@ from datetime import datetime, timedelta
 from django.utils import timezone
 import uuid
 
+def parse_response(data={}, status=1):
+    res = {
+        'status': status,
+        'message': 'ok',
+        'data':data
+    }
+    return res
+
+def parse_error(e, status=0):
+    return  {
+        'status': status,
+        'message': e,
+        'data':{}
+    }
+
 def get_instance(_Model, id):
     try:
         return _Model.objects.get(id=id)
