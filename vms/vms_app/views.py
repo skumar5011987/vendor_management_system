@@ -3,7 +3,7 @@ from rest_framework.views import APIView, Response
 from rest_framework import status
 from .serializers import vender_serializer
 from rest_framework.permissions import IsAuthenticated
-from vms_app.utils import (get_po_number, parse_date, total_quantity, get_instance)
+from vms_app.utils import *
 from django.utils import timezone
 import logging
 
@@ -18,7 +18,8 @@ class VendorsAPIView(APIView):
         else:
             qs = Vendor.objects.all()
         serializer = vender_serializer.VendorSerializer(qs, many=True)        
-        return Response(serializer.data, status=status.HTTP_200_OK)
+        resp = parse_response(serializer.data, status=status.HTTP_200_OK)
+        return Response(resp)
     
     def post(self, request):
         user = request.user
@@ -26,8 +27,9 @@ class VendorsAPIView(APIView):
         serializer = vender_serializer.VendorSerializer(data=request.data, partial=True)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            resp = parse_response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(resp)
+        return Response(parse_error(serializer.errors, status=status.HTTP_400_BAD_REQUEST))
         
     def put(self, request, id):
         vendor = get_instance(Vendor, id)
@@ -35,16 +37,17 @@ class VendorsAPIView(APIView):
             serializer = vender_serializer.VendorSerializer(vendor, data=request.data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response(status=status.HTTP_404_NOT_FOUND)
+                resp = parse_response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(resp)
+            return Response(parse_error(serializer.errors, status=status.HTTP_400_BAD_REQUEST))
+        return Response(parse_response(status=status.HTTP_404_NOT_FOUND))
     
     def delete(self, request, id):
         vendor = get_instance(Vendor, id)
         if vendor:
             vendor.delete()
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(parse_response(status=status.HTTP_200_OK))
+        return Response(parse_response(status=status.HTTP_404_NOT_FOUND))
 
 
 # purchase order view
@@ -58,8 +61,9 @@ class PurchaseOrderAPIView(APIView):
         serializer = vender_serializer.PurchaseOrderSerializer(data=request.data)
         if serializer.is_valid():
             serializer.save()
-            return Response(serializer.data, status=status.HTTP_201_CREATED)
-        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            resp = parse_response(serializer.data, status=status.HTTP_201_CREATED)
+            return Response(resp)
+        return Response(parse_error(serializer.errors, status=status.HTTP_400_BAD_REQUEST))
     
     def get(self, request, po_id=None):
         
@@ -80,10 +84,11 @@ class PurchaseOrderAPIView(APIView):
                 pos = pos.filter(vendor_id=vendor)
             
             serializer = vender_serializer.PurchaseOrderSerializer(pos, many=True)
-            return Response(serializer.data, status=status.HTTP_200_OK)
+            resp = parse_response(serializer.data, status=status.HTTP_200_CREATED)
+            return Response(resp)
         except Exception as exc:
-            print(f"Error:{exc}")
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+            _logger.error(f"Error:{exc}")
+            return Response(parse_error(status=status.HTTP_400_BAD_REQUEST))
         
     def put(self, request, po_id):
         try:
@@ -99,18 +104,20 @@ class PurchaseOrderAPIView(APIView):
                 serializer = vender_serializer.PurchaseOrderSerializer(po, data=data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
-                    return Response(serializer.data, status=status.HTTP_200_OK)
-                return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-            return Response(status=status.HTTP_404_NOT_FOUND)
+                    resp = parse_response(serializer.data, status=status.HTTP_201_CREATED)
+                    return Response(resp)
+                return Response(parse_error(serializer.errors, status=status.HTTP_400_BAD_REQUEST))
+            return Response(parse_response(status=status.HTTP_400_BAD_REQUEST))
         except Exception as exc:
-            print(f"Something went wrong.")
+            _logger.error(f"Something went wrong.")
+            return Response(parse_error(status="Something went wrong."))
     
     def delete(self, request, po_id):
         po = get_instance(PurchaseOrder, po_id)
         if po:
             po.delete()
-            return Response(status=status.HTTP_200_OK)
-        return Response(status=status.HTTP_404_NOT_FOUND)
+            return Response(parse_response(status=status.HTTP_200_OK))
+        return Response(parse_response(status=status.HTTP_404_NOT_FOUND))
     
     def add_params(self, data):
         po_number = get_po_number()
@@ -136,9 +143,10 @@ class AcknowledgePOAPIView(APIView):
                 po, data=data, partial=True)
             if serializer.is_valid():
                 serializer.save()
-                return Response(serializer.data, status=status.HTTP_200_OK)
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-        return Response(status=status.HTTP_404_NOT_FOUND)
+                resp = parse_response(serializer.data, status=status.HTTP_201_CREATED)
+                return Response(resp)
+            return Response(parse_error(serializer.errors, status=status.HTTP_400_BAD_REQUEST))
+        return Response(parse_response(status=status.HTTP_404_NOT_FOUND))
 
 
 class VendorsPerformanceAPIView(APIView):
@@ -148,5 +156,6 @@ class VendorsPerformanceAPIView(APIView):
         vendor = Vendor.objects.get(id=id)
         if vendor:
             serializer = vender_serializer.VendorPerformanceSerializer(vendor)
-            return Response(serializer.data, status=status.HTTP_200_OK)
-        return Response(serializer.errors, status=status.HTTP_404_NOT_FOUND)
+            resp = parse_response(serializer.data, status=status.HTTP_200_OK)
+            return Response(resp)
+        return Response(parse_response(status=status.HTTP_404_NOT_FOUND))
