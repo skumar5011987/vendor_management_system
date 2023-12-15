@@ -84,7 +84,7 @@ class PurchaseOrderAPIView(APIView):
                 pos = pos.filter(vendor_id=vendor)
             
             serializer = vender_serializer.PurchaseOrderSerializer(pos, many=True)
-            resp = parse_response(serializer.data, status=status.HTTP_200_CREATED)
+            resp = parse_response(serializer.data, status=status.HTTP_200_OK)
             return Response(resp)
         except Exception as exc:
             _logger.error(f"Error:{exc}")
@@ -100,7 +100,7 @@ class PurchaseOrderAPIView(APIView):
             user = request.user
             data.update({'user':user})
             po = get_instance(PurchaseOrder, po_id)
-            if po and po.status=='pending':
+            if  po and po.acknowledgment_date and po.status=='pending':
                 serializer = vender_serializer.PurchaseOrderSerializer(po, data=data, partial=True)
                 if serializer.is_valid():
                     serializer.save()
@@ -109,7 +109,7 @@ class PurchaseOrderAPIView(APIView):
                 return Response(parse_error(serializer.errors, status=status.HTTP_400_BAD_REQUEST))
             return Response(parse_response(status=status.HTTP_400_BAD_REQUEST))
         except Exception as exc:
-            _logger.error(f"Something went wrong.")
+            _logger.error(f"Unable to update order. Error: {exc}")
             return Response(parse_error(status="Something went wrong."))
     
     def delete(self, request, po_id):
@@ -137,7 +137,7 @@ class AcknowledgePOAPIView(APIView):
     
     def put(self, request, po_id):        
         po = get_instance(PurchaseOrder, po_id)
-        if po:
+        if po and po.status == 'pending':
             data = {'acknowledgment_date': timezone.now()}
             serializer = vender_serializer.PurchaseOrderSerializer(
                 po, data=data, partial=True)
@@ -146,7 +146,7 @@ class AcknowledgePOAPIView(APIView):
                 resp = parse_response(serializer.data, status=status.HTTP_201_CREATED)
                 return Response(resp)
             return Response(parse_error(serializer.errors, status=status.HTTP_400_BAD_REQUEST))
-        return Response(parse_response(status=status.HTTP_404_NOT_FOUND))
+        return Response(parse_response(status=status.HTTP_400_BAD_REQUEST))
 
 
 class VendorsPerformanceAPIView(APIView):
