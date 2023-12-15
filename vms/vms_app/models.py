@@ -13,7 +13,7 @@ class Vendor(models.Model):
     quality_rating_avg = models.FloatField(default=0)
     average_response_time = models.FloatField(default=0)
     fulfillment_rate = models.FloatField(default=0)
-    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE, null=True, blank=True)
 
     def __str__(self):
         return self.name
@@ -40,9 +40,9 @@ class PurchaseOrder(models.Model):
     po_number = models.CharField(max_length=50, unique=True)
     vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE, related_name='vendor')
     order_date = models.DateTimeField(auto_now_add=True)
-    delivery_date = models.DateTimeField()
+    delivery_date = models.DateTimeField(null=True, blank=True)
     items = models.JSONField()
-    quantity = models.IntegerField()
+    quantity = models.IntegerField(null=True, blank=True)
     status = models.CharField(max_length=20, default='pending', choices=STATUS_CHOICES)
     quality_rating = models.FloatField(null=True, blank=True)
     issue_date = models.DateTimeField(blank=True, null=True)
