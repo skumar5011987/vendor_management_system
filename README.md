@@ -181,3 +181,9 @@ Before you start, make sure you have the following prerequisites installed on yo
     Method: PUT
     Description: This endpoint will update the current date as acknowledgment_date and trigger the recalculation
     of average_response_time.
+
+13. Get Vendor's Historical Performance
+   URL: http://localhost:8000/api/vendors/{vendor_id}/performancehistory/
+   Method: GET
+   Description: This endpoint returns the historical performance of the vendor.
+   Note: Historical performance recorded every time the vendor's purchase order status changed to 'completed'.
