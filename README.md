@@ -191,4 +191,4 @@ Before you start, make sure you have the following prerequisites installed on yo
 
 # Test Suit
 Command to run test suit:
-   python manage.py test vms_app.tests.ModelTestCase
+   python manage.py test vms_app.tests.ModelTestCas
