@@ -52,3 +52,8 @@ class VendorPerformanceSerializer(serializers.ModelSerializer):
         representation['fulfillment_rate'] = str(instance.fulfillment_rate) + ' %'
         
         return representation
+    
+class VendorHistoricalPerformanceSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = HistoricalPerformance
+        fields = '__all__'
