@@ -1,4 +1,5 @@
 from django.contrib.auth.models import User
+from datetime import timedelta
 from django.db import models
 import uuid
 
@@ -50,6 +51,25 @@ class PurchaseOrder(models.Model):
     def __str__(self):
         return f"PO Number: {self.po_number} - Vendor: {self.vendor.name}"
     
+    def avg_resp_time(self, qra=None, update=False):
+        # vendor = self.vendor
+        vendor = Vendor.objects.filter(id=self.vendor.id)
+        all_po = PurchaseOrder.objects.filter(vendor=self.vendor).exclude(status='canceled')
+        td_list = []
+        for obj in all_po:
+            if obj.acknowledgment_date:
+                td_list.append(obj.acknowledgment_date - obj.issue_date)
+        total_timedelta = sum(td_list, timedelta(0))
+        if td_list:
+            td = total_timedelta / len(td_list)
+        
+        if update:
+            vendor.update(average_response_time = td.days*24 + td.seconds//3600)
+        else:
+            v= vendor.first()
+            v.average_response_time=td.days*24 + td.seconds//3600
+            v.quality_rating_avg = qra
+            v.save()
     
 class HistoricalPerformance(models.Model):
     vendor = models.ForeignKey('Vendor', on_delete=models.CASCADE, related_name = 'vendor_history')
