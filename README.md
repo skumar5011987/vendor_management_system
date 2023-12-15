@@ -187,3 +187,8 @@ Before you start, make sure you have the following prerequisites installed on yo
    Method: GET
    Description: This endpoint returns the historical performance of the vendor.
    Note: Historical performance recorded every time the vendor's purchase order status changed to 'completed'.
+
+
+# Test Suit
+Command to run test suit:
+   python manage.py test vms_app.tests.ModelTestCase
