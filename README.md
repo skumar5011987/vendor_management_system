@@ -122,7 +122,8 @@ Before you start, make sure you have the following prerequisites installed on yo
    "items":{
    "Parle g": 270,
    "Good day": 240
-   }
+   },
+   "delivery_date": "25-12-2023" (date format DD-MM-YYYY) [it is optional, if not provided it will assign date after 7 day]
    }
    Description: Creates new Purchase order and return the order in response.
 
@@ -147,8 +148,7 @@ Before you start, make sure you have the following prerequisites installed on yo
     "items":{
    "Parle g": 290,
    "Good day": 280
-   },
-   "delivery_date": "25-12-2023" (date format DD-MM-YYYY) [it is optional, if not provided it will assign date after 7 day]
+   }
    }
    Description: Update the Purchase order details and return the updated Purchase order.
 
