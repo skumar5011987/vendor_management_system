@@ -148,7 +148,7 @@ Before you start, make sure you have the following prerequisites installed on yo
    "Parle g": 290,
    "Good day": 280
    },
-   "delivery_date": "25-12-2023" (date format DD/MM/YYYY)
+   "delivery_date": "25-12-2023" (date format DD-MM-YYYY) [it is optional, if not provided it will assign date after 7 day]
    }
    Description: Update the Purchase order details and return the updated Purchase order.
 
@@ -169,11 +169,12 @@ Before you start, make sure you have the following prerequisites installed on yo
     "data": {
     "name": "Pinogy Corporation",
     "vendor_code": "0D858461",
-    "on_time_delivery_rate": 1.0,
-    "quality_rating_avg": 95.0,
-    "average_response_time": 0.0,
-    "fulfillment_rate": 1.5
-    }}
+    "on_time_delivery_rate": "100.0 %",
+    "quality_rating_avg": "63.22 %",
+    "average_response_time": "10.0 hours",
+    "fulfillment_rate": "75.0 %"
+    }
+    }
 
 12. Update Acknowledgment Endpoint:
     URL: http://localhost:8000/api/purchase_orders/{po_id}/acknowledge/
