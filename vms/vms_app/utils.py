@@ -38,7 +38,7 @@ def get_po_number():
     return order_id
 
 def parse_date(date):
-    date_format = '%d-%m-%Y'
+    date_format = '%Y-%m-%d'
     if not date:
         date = timezone.now() + timedelta(days=7)
         return date

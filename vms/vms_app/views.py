@@ -159,3 +159,23 @@ class VendorsPerformanceAPIView(APIView):
             resp = parse_response(serializer.data, status=status.HTTP_200_OK)
             return Response(resp)
         return Response(parse_response(status=status.HTTP_404_NOT_FOUND))
+
+
+class VendorsPerformanceHistoryAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+    
+    def get(self, request, id):
+        try:
+            id=int(id)
+            vendor = get_instance(Vendor, id)
+            if vendor:                
+                ven_his = HistoricalPerformance.objects.filter(vendor=vendor).order_by('-date')
+                if ven_his:
+                    data = vender_serializer.VendorHistoricalPerformanceSerializer(ven_his, many=True).data
+                    resp = parse_response(data, status=status.HTTP_200_OK)
+                    return Response(resp)
+            return Response(parse_response(status=status.HTTP_404_NOT_FOUND))
+        except Exception as exc:
+            _logger.error(f"Con't get Vendor {id} performnce history. Error :{exc}")
+            return Response(parse_response(status=status.HTTP_404_NOT_FOUND))
+            
