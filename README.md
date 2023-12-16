@@ -52,7 +52,6 @@ Before you start, make sure you have the following prerequisites installed on yo
 11. Run Migration and migrate to create database schema.
     python manage.py makemigrations
     python manage.py migrate
-    python manage.py runserver
 
 12. Cerate a super user
     python manage.py createsuper user
@@ -61,9 +60,13 @@ Before you start, make sure you have the following prerequisites installed on yo
     python manage.py drf_create_token <username>
     Ex: token 5bbc73193b1e9f4d5b82bb004aac31c008b2514a (this is need to added as Authorization in api call)
 
+14. Start the server
+   python manage.py runserver
+
 # API Endpoints
 
 # Vendor Profile Management:
+Note: Dont't forget to add Authorizations in request headers
 
 1. Create new Vendor
    URL: http://localhost:8000/api/vendors/
