@@ -27,11 +27,11 @@ Before you start, make sure you have the following prerequisites installed on yo
 
 1. Create a folder and open in editor (VSCode).
 2. Open new terminal
-3. Create a virtual environment to isolate project dependencies.
+3. Clone the project (git clone https://github.com/skumar5011987/vendor_management_system.git) and move to project directory
+4. Create a virtual environment to isolate project dependencies.
    virtualenv venv
-4. Activate the virtual environment.
-   source venv/bin/activate(for linux) Or venv/Scripts/activate(for windos)
-5. Clone the project (git clone https://github.com/skumar5011987/vendor_management_system.git)
+5. Activate the virtual environment.
+   source venv/bin/activate(for linux) Or venv/Scripts/activate(for windos) 
 6. Move to the project directory containing file 'requirements.py'
    say: cd /vms
 7. Install project dependencies from the requirements.txt file.
