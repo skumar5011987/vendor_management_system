@@ -1,8 +1,7 @@
 # Django Developer Assignment
 
 # Vendor Management System with Performance Metrics
-
-Author: Sailesh kumar
+# Author: Sailesh kumar (Software Engineer at Subtlelabs SOftware solution Pvt Ltd)
 
 # Objective
 
@@ -38,8 +37,8 @@ Before you start, make sure you have the following prerequisites installed on yo
 7. Install project dependencies from the requirements.txt file.
    pip install -r requirements.txt
 8. Makesure there should be postgresql & pgAdmin installed and listning apt port: 5432
-9. Create a database
-10. open settings.py file and update DATABASE setting.
+9. Open pgAdmin and create a database
+10. Open project's settings.py file and update DATABASE setting.
     ex: DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql',
