@@ -1,5 +1,6 @@
 from rest_framework.authtoken.models import Token
 from datetime import datetime, timedelta
+from rest_framework.exceptions import ValidationError
 from django.utils import timezone
 import uuid
 
@@ -45,8 +46,11 @@ def parse_date(date):
     date = datetime.strptime(date, date_format)
     return date
 
-def total_quantity(items):
+def total_quantity(value):
     total=0
-    for item in items:        
-        total = total + items[item]
+    for key, val in value.items():
+            if not isinstance(val, (int, float)):
+                raise ValidationError(F"Item '{key}' value must be in int or float.")    
+            else:                
+                total = total + val
     return total
