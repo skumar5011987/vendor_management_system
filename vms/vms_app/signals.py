@@ -24,20 +24,23 @@ def calculate_performance(sender, instance, created, **kwargs):
                 
                 # Quality Rating Average
                 qty_rating_avg = pos.filter(status='completed').aggregate(avg_value=Avg('quality_rating'))
-                avg_rating = round(qty_rating_avg['avg_value'], 2)
+                vendor.quality_rating_avg = round(qty_rating_avg['avg_value'], 2)
                 
                 # Fulfilment Rate
                 vendor.fulfillment_rate = round(completed_count / total_pos, 2) * 100
                 # Average Response Time
-                instance.avg_resp_time(avg_rating)
-                # vendor.save()
+                vendor.average_response_time =  instance.avg_resp_time()
+                
+                vendor.save()
             except Exception as exc:
                 _logger.error(f"Can't update vendor metrics. Error : {exc}")
 
 @receiver(post_save, sender=PurchaseOrder)
 def recalculate_avg_res_time(sender, instance, created, **kwargs):
     if not created:
-        instance.avg_resp_time(update=True)
+        vendor = Vendor.objects.filter(pk=instance.vendor.pk)
+        avg_time =  instance.avg_resp_time()
+        vendor.update(average_response_time = avg_time)
         
 @receiver(post_save, sender=Vendor)
 def create_purchase_history(sender, instance, created, **kwargs):
